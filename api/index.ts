@@ -17,20 +17,30 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     const tokenRes = await axios({
       method: "POST",
       url: "https://github.com/login/oauth/access_token",
-      params: { code, client_id, client_secret },
-      headers: { Accept: "application/json" },
+      params: {
+        code,
+        client_id,
+        client_secret,
+      },
+      headers: {
+        Accept: "application/json",
+      },
     })
 
     const userRes = await axios({
       method: "GET",
       url: "https://api.github.com/user",
-      headers: { Authorization: `${tokenRes.data.token_type} ${tokenRes.data.access_token}` },
+      headers: {
+        Authorization: `bearer ${tokenRes.data.access_token}`,
+      },
     })
 
-    const setCookie = `${cookieName}=${JSON.stringify(userRes.data)}`
-
-    return res.setHeader("Set-Cookie", setCookie).redirect("/api")
+    return res
+      .setHeader("Set-Cookie", `${cookieName}=${JSON.stringify(userRes.data)}`)
+      .redirect("/api")
   }
 
-  return res.redirect(`https://github.com/login/oauth/authorize?client_id=${client_id}`)
+  return res.redirect(
+    `https://github.com/login/oauth/authorize?client_id=${client_id}`
+  )
 }
