@@ -1,4 +1,4 @@
-import { VercelRequest, VercelResponse } from "@vercel/node"
+import type { VercelRequest, VercelResponse } from "@vercel/node"
 import axios from "axios"
 
 const client_id = process.env.GITHUB_CLIENT_ID
@@ -31,7 +31,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
       method: "GET",
       url: "https://api.github.com/user",
       headers: {
-        Authorization: `bearer ${tokenRes.data.access_token}`,
+        Authorization: `bearer ${tokenRes.data.data.access_token}`,
       },
     })
 
@@ -41,6 +41,6 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   }
 
   return res.redirect(
-    `https://github.com/login/oauth/authorize?client_id=${client_id}`
+    `https://github.com/login/oauth/authorize?client_id=${client_id}`,
   )
 }
