@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "check": "tsc --noEmit",
+    "check": "bun check",
     "format": "bun fmt"
   },
   "dependencies": {
@@ -13,7 +13,6 @@
   "devDependencies": {
     "@types/node": "^25.0.1",
     "@vercel/node": "^5.5.15",
-    "typescript": "^5.9.3",
     "vercel": "^50.0.0"
   }
 }
